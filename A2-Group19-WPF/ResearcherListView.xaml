@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="A2_Group19_WPF.ResearcherListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:A2_Group19_WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="200">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="ResearcherList"
+		                    ObjectInstance="{StaticResource ResearcherController}"
+		                    MethodName="GetVisibleList" />
+
+        <ObjectDataProvider x:Key="CategoryValues"
+		                    ObjectType="{x:Type sys:Enum}"
+		                    MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="teaching:Category" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
+    <DockPanel Margin="1,1,1,1">
+        <DockPanel DockPanel.Dock="Top">
+            <Label>Filter by name:</Label>
+            <TextBox x:Name="NameFilter" DockPanel.Dock="Right" Height="20" Margin="0,0,0,0" TextChanged="FilterByName" />
+        </DockPanel>
+
+        <DockPanel DockPanel.Dock="Top">
+            <Label>Show:</Label>
+            <ComboBox x:Name="CategoryFilter" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right"
+			          ItemsSource="{Binding Source={StaticResource CategoryValues}}" SelectedIndex="0" SelectionChanged="SelectCategory" />
+        </DockPanel>
+
+        <DataGrid x:Name="ResearcherList" Margin="0,5,0,0"
+		          AutoGenerateColumns="False" GridLinesVisibility="None" RowHeaderWidth="0"
+		          IsReadOnly="True" SelectionMode="Single"
+		          ItemsSource="{Binding Source={StaticResource ResearcherList}}"
+		          SelectionChanged="ResearcherMemberSelectedHandler">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=FormalName}" Width="*" />
+                <DataGridTextColumn Header="Category" Binding="{Binding Path=Category}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>
